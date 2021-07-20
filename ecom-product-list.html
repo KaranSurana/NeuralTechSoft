@@ -851,9 +851,9 @@
 
 		function bondpricecal(){
 			var S =document.getElementById("paymentt").value;
-			var r =document.getElementById("maturityy").value;
-			var t =document.getElementById("yieldd").value/100;
-			var q =document.getElementById("facee").value;
+			var r =document.getElementById("maturityy").value/100;
+			var t =document.getElementById("yieldd").value;
+			var q =document.getElementById("facee").value/100;
 			var u=document.getElementById("couponn").value/100;
 			ComforwardPrice = S*(Math.exp((r+u-q)*t))
 			document.getElementById("result").value=ComforwardPrice;

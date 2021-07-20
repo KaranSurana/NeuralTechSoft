@@ -854,8 +854,23 @@
 
 				<button onclick="bondpricecal()" style="position: relative; top: 150px; left: 45%; background-color: #FE634E; color: white; border: 2px solid #FE634E; border-radius: 7px; width: 100px; height: 40px;">Calculate</button>
 
+				<label style="position: relative; top: 218px; left: -5%;">price:</label>
+				<input id="result" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: -4%; width: 20%; height: 40px;" type="text">
+				<label style="position: relative; top: 218px; left: 2%;" >Delta:</label>
+				<input id="result1" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 4%; width: 20%; height: 40px;" type="text">
 
-				<input id="result" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 30%; width: 20%; height: 40px;" type="text">
+				<label style="position: relative; top: 218px; left: 12%;">Gamma:</label>
+				<input id="result2" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 14%; width: 20%; height: 40px;" type="text">
+
+				<label style="position: relative; top: 295px; left: -81.7%;">Vega:</label>
+				<input id="result3" style="border: 2px solid white; border-radius: 7px; position: relative; top: 258px; left: 9.7%; width: 20%; height: 40px;" type="text">
+
+				<label style="position: relative; top: 257px; left: 15.5%;">Theta:</label>
+				<input id="result4" style="border: 2px solid white; border-radius: 7px; position: relative; top: 257px; left: 17.5%; width: 20%; height: 40px;" type="text">
+
+				<label style="position: relative; top: 257px; left: 25.5%;">Rho:</label>
+				<input id="result5" style="border: 2px solid white; border-radius: 7px; position: relative; top: 257px; left: 30.5%; width: 20%; height: 40px;" type="text">
+				
 			</div>
 		</div>
         
@@ -867,20 +882,36 @@
 	<script src="./js/deznav-init.js"></script>
 	<script src="./vendor/lightgallery/js/lightgallery-all.min.js"></script>
 	<script src="components/jstat.js"></script>
+	<script src="components/jstat.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.7.0/jstat.min.js"></script>
 	<script>
 		$('#lightgallery').lightGallery({
 			thumbnail:true,
 		});
 
 		function bondpricecal(){
-			var m =document.getElementById("paymentt").value;
-			var t =document.getElementById("maturityy").value;
-			var i =document.getElementById("yieldd").value/100;
-			var fv =document.getElementById("facee").value;
-			var c=document.getElementById("couponn").value/100;
-			bondPrice = ((fv*c/m*(1-(1+i/m)**(-m*t)))/(i/m)) + fv*(1+(i/m))**(-m*t)
-			document.getElementById("result").value=bondPrice;
+			var S =document.getElementById("paymentt").value;
+			var K =document.getElementById("maturityy").value;
+			var T =document.getElementById("yieldd").value;
+			var r =document.getElementById("facee").value/100;
 			
+			var sigma=document.getElementById("couponn").value/100;
+			
+    		d1 = (Math.log(S/K)+(r+sigma**2/2)*T)/(sigma*Math.sqrt(T))
+    		d2 = d1-sigma*Math.sqrt(T)
+			callprice = S*jStat.normal.cdf(d1,0,1)-K*Math.exp(-r*T)*jStat.normal.cdf(d2,0,1)
+			var delta = jStat.normal.cdf(d1,0,1)
+			var	gamma = (K*Math.exp(-r*T)*jStat.normal.pdf(d2,0,1))/(sigma*Math.sqrt(T)*S**2)
+			var	vega = (S*jStat.normal.pdf(d1,0,1)*Math.sqrt(T))
+			var	theta = (-r*K*Math.exp(-r*T)*jStat.normal.cdf(d2,0,1))-(S*jStat.normal.pdf(d1,0,1)*sigma)/(2*Math.sqrt(T))
+			var	rho = K*Math.exp(-r*T)*jStat.normal.cdf(d2,0,1)*T
+			document.getElementById("result").value=callprice;
+			document.getElementById("result1").value=delta;
+			document.getElementById("result2").value=gamma;
+			document.getElementById("result3").value=vega;
+			document.getElementById("result4").value=theta;
+			document.getElementById("result5").value=rho;
 		}
 	</script>
     

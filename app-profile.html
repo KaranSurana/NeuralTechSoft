@@ -833,7 +833,17 @@
 				<button onclick="bondpricecal()" style="position: relative; top: 150px; left: 45%; background-color: #FE634E; color: white; border: 2px solid #FE634E; border-radius: 7px; width: 100px; height: 40px;">Calculate</button>
 
 
-				<input id="result" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 30%; width: 20%; height: 40px;" type="text">
+				<label style="position: relative; top: 218px; left: 10%;">Bond Price:</label>
+				<input id="result" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 12%; width: 20%; height: 40px;" type="text">
+				<label style="position: relative; top: 218px; left: 21%;" >DV01:</label>
+				<input id="result1" style="border: 2px solid white; border-radius: 7px; position: relative; top: 220px; left: 23.7%; width: 20%; height: 40px;" type="text">
+
+				<label style="position: relative; top: 295px; left: -48%;">Modified Duration:</label>
+				<input id="result2" style="border: 2px solid white; border-radius: 7px; position: relative; top: 295px; left: -46%; width: 20%; height: 40px;" type="text">
+
+				<label style="position: relative; top: 255px; left: 53%;">CalConvexity:</label>
+				<input id="result3" style="border: 2px solid white; border-radius: 7px; position: relative; top: 258px; left: 55.7%; width: 20%; height: 40px;" type="text">
+
 			</div>
 		</div>
         
@@ -855,8 +865,15 @@
 			var i =document.getElementById("yieldd").value/100;
 			var fv =document.getElementById("facee").value;
 			var c=document.getElementById("couponn").value/100;
-			bondPrice = ((fv*c/m*(1-(1+i/m)**(-m*t)))/(i/m)) + fv*(1+(i/m))**(-m*t)
+			var bondPrice = ((fv*c/m*(1-(1+i/m)**(-m*t)))/(i/m)) + fv*(1+(i/m))**(-m*t)
+			var bondPrice01 = ((fv*c/m*(1-(1+(i-0.0001)/m)**(-m*t)))/((i-0.0001)/m)) + fv*(1+((i-0.0001)/m))**(-m*t)
+			var Dv01 = bondPrice01 - bondPrice
+			var modDuration = Dv01*10000/bondPrice
+			
 			document.getElementById("result").value=bondPrice;
+			document.getElementById("result1").value=Dv01;
+			document.getElementById("result2").value=modDuration;
+			
 		}
 	</script>
     
