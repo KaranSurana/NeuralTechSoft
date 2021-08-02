@@ -726,7 +726,7 @@
 							<span class="nav-text">Valuation</span>
 						</a>
                          <ul aria-expanded="false">
-                            <li><a href="./bondvalue.html">Bond Price Calculator</a></li>
+                            <li><a href="./bondvalue.html">Bond Value Calculator</a></li>
                             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Options</a>
                                 <ul aria-expanded="false">
                                     <li><a href="./callvalue.html">&nbsp;&nbsp;&nbsp;&nbsp;Call Value</a></li>
@@ -863,6 +863,10 @@
     <script src="./js/custom.min.js"></script>
 	<script src="./js/deznav-init.js"></script>
 	<script src="./vendor/lightgallery/js/lightgallery-all.min.js"></script>
+
+	<script src="bower_packages/numjs/dist/numjs.min.js"></script>
+	<!-- or include it directly from a CDN -->
+	<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
 	<script>
 		$('#lightgallery').lightGallery({
 			thumbnail:true,
@@ -878,10 +882,23 @@
 			var bondPrice01 = ((fv*c/m*(1-(1+(i-0.0001)/m)**(-m*t)))/((i-0.0001)/m)) + fv*(1+((i-0.0001)/m))**(-m*t)
 			var Dv01 = bondPrice01 - bondPrice
 			var modDuration = Dv01*10000/bondPrice
+			var calcConvexity1=0;
+			var arr=[]
+			for (var kk=1;kk<m*t;kk++){
+				arr.push(kk);
+			}
+			for(var kk=0;kk<arr.length;kk++){
+				var x=arr[kk];
+				calcConvexity1 += ((x*(x+1)*c/m*fv/(1+i/m)**x))
+			}
+			
+			
+			var calcConvexity =1 /(bondPrice*(1+i/m)**2)*(calcConvexity1+ m*t*(m*t+1)*(c/m+1)*fv/(1+i/m)**(m*t));
 			
 			document.getElementById("result").value=bondPrice;
 			document.getElementById("result1").value=Dv01;
 			document.getElementById("result2").value=modDuration;
+			document.getElementById("result3").value=calcConvexity;
 			
 		}
 	</script>
