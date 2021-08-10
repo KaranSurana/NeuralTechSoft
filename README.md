@@ -1,4 +1,4 @@
-➼ #NeuralTechSoft
+#NeuralTechSoft
 
 ➼ A Stock & Commodity Statistics, Pricing Evaluation, Valuation & Risk Management Determining Website.
 
